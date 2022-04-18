@@ -90,41 +90,4 @@ DATABASES = {
     }
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
-        'verbose': {
-            'format': '{asctime} ({levelname}) - {name} - {message}',
-            'style': '{'
-        }
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-        },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': 'logs/general.log',
-            'formatter': 'verbose',
-        }
-    },
-    'loggers': {
-        'django': {
-            'level': 'INFO',
-            'handlers': ['console'],
-        },
-        'django.request': {
-            'level': 'ERROR',
-            'handlers': ['file'],
-            'propagate': False,
-        },
-    },
-}
-
 # TODO 添加Pagination

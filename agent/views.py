@@ -14,15 +14,14 @@ from cmdb.models import HV, VM
 
 VCENTER_IP = ['10.138.60.66', '10.10.250.237', '10.138.61.6']
 
-logger = logging.getLogger(__name__)
-
 
 def timer(func):
     def deco(*args, **kwargs):
         start = time.time()
         res = func(*args, **kwargs)
         end = time.time()
-        print('总耗时 {_time_} 秒'.format(_time_=(round(end - start), 2)))
+        cost = round((end - start), 2)
+        print(f'总耗时 {cost} 秒')
         return res
 
     return deco
@@ -40,11 +39,8 @@ class HVBornAPIView(views.APIView):
                 try:
                     queryset = HV.objects.create(name=hv['name'])
                 except KeyError:
-                    logger.info(f'{hv.name}的某个字段unset')
+                    print(f'{hv.name}的某个字段unset')
                     continue
-                except Exception:
-                    logger.error(Exception)
-                    return Response('HV初始化失败')
         return Response('HV初始化结束')
 
 

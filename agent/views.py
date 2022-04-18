@@ -12,7 +12,7 @@ from rest_framework import views
 
 from cmdb.models import HV, VM
 
-VCENTER_IP = ['10.138.60.66']
+VCENTER_IP = ['10.138.60.66', '10.10.250.237', '10.138.61.6']
 
 logger = logging.getLogger(__name__)
 

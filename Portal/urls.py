@@ -13,7 +13,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from agent.views import VMBornAPIView, HVBornAPIView
+from agent.views import VMBornAPIView, HVBornAPIView, HVAliveAPIView, VMAliveAPIView
 from cmdb.views import HVViewSet, VMViewSet
 
 router = DefaultRouter()
@@ -24,6 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('hv/born/', HVBornAPIView.as_view()),
     path('vm/born/', VMBornAPIView.as_view()),
+    path('vm/alive/', HVAliveAPIView.as_view()),
+    path('vm/alive/', VMAliveAPIView.as_view()),
 ]
 
 urlpatterns += router.urls

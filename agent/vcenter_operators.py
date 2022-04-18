@@ -1,6 +1,6 @@
 from pyVmomi import vim, vmodl
 
-from xtyw.vcenter_managers import Manager
+from .vcenter_managers import Manager
 
 
 class OperatorBoy(Manager):

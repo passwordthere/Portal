@@ -1,6 +1,7 @@
 import atexit
 import time
 
+# TODO 在Linux下需要修改为pyVim
 from pyvim.connect import SmartConnectNoSSL, Disconnect
 from pyVmomi import vim
 

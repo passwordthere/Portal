@@ -1,5 +1,8 @@
 import logging
 import time
+
+from MySQLdb._exceptions import IntegrityError
+
 from agent.vcenter_operators import OperatorGirl
 from pyVmomi import vim
 
@@ -51,15 +54,18 @@ class VMBornAPIView(views.APIView):
     def get(self, request):
         properties = ["name", "vm"]
         for vcenter_ip in VCENTER_IP:
-            create_list = []
-            hv_data = OperatorGirl(vcenter_ip).collect_properties(obj_type=vim.HostSystem, path_set=properties)
-            for hv in hv_data:
-                for vm in hv['vm']:
-                    hv_id = HV.objects.filter(name=hv['name']).values_list('id', flat=True)
-                    if vm.summary.config.template:
-                        queryset = VM(name=vm.name, is_template=1, hv_id=hv_id)
-                    else:
-                        queryset = VM(name=vm.name, hv_id=hv_id)
-                    create_list.append(queryset)
-            VM.objects.bulk_create(create_list)
-        return Response('VM初始化完毕')
+            try:
+                create_list = []
+                hv_data = OperatorGirl(vcenter_ip).collect_properties(obj_type=vim.HostSystem, path_set=properties)
+                for hv in hv_data:
+                    for vm in hv['vm']:
+                        hv_id = HV.objects.filter(name=hv['name']).values_list('id', flat=True)
+                        if vm.summary.config.template:
+                            queryset = VM(name=vm.name, is_template=1, hv_id=hv_id)
+                        else:
+                            queryset = VM(name=vm.name, hv_id=hv_id)
+                        create_list.append(queryset)
+                VM.objects.bulk_create(create_list, ignore_conflicts=True)
+            except Exception:
+                logger.error(Exception)
+        return Response('VM初始化结束')
